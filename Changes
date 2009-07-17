@@ -1,0 +1,9 @@
+Revision history for Perl extension EV::Loop::Async.
+
+0.02  Fri Jul 17 17:02:24 CEST 2009
+	- first CPAN release, now that EV 3.7 is finally
+          released.
+
+0.01  Tue Jul 14 01:18:55 CEST 2009
+	- original version; cloned from, uhm, other stuff.
+
