@@ -46,7 +46,7 @@ my $mm = MM->new({EV::MakeMaker::ev_args (
     },
     META_MERGE => {
       configure_requires => {
-        EV => 2.0,
+        EV => 3.7,
       },
     },
 )});

@@ -23,6 +23,9 @@ typedef struct {
   cond_t invoke_cv;
 
   SV *interrupt;
+#if defined(_WIN32) && defined(USE_ITHREADS)
+  void *thx;
+#endif
 } udat;
 
 static void loop_set_cb (EV_P);
@@ -109,6 +112,15 @@ loop_set_cb (EV_P)
 X_THREAD_PROC(l_run)
 {
   struct ev_loop *loop = (struct ev_loop *)thr_arg;
+#if defined(_WIN32) && defined(USE_ITHREADS)
+  udat *u = ev_userdata (EV_A);
+
+  /* just setting the same context pointer as the other thread is */
+  /* probably fatal, yet, I have no clue what makes libev crash (malloc?) */
+  /* as visual c also crashes when it tries to debug the crash */
+  /* the loser platform is indeed a crashy OS */
+  PERL_SET_CONTEXT (u->thx);
+#endif
 
   l_acquire (EV_A);
 
@@ -163,6 +175,9 @@ _attach (SV *loop_, SV *interrupt, IV sig_func, void *sig_arg)
         u->interrupt   = newSVsv (interrupt);
         u->signal_func = (void (*)(void *, int))sig_func;
         u->signal_arg  = sig_arg;
+#if defined(_WIN32) && defined(USE_ITHREADS)
+        u->thx         = PERL_GET_CONTEXT;
+#endif
 
         ev_async_init (&u->async_w, async_cb);
         ev_async_start (EV_A, &u->async_w);
@@ -248,6 +263,7 @@ DESTROY (SV *loop_)
             ev_async_stop (EV_A, &u->async_w);
             /* now thread is around blocking call, or in pthread_cond_wait */
             pthread_cancel (u->tid);
+            X_UNLOCK (u->lock);
             pthread_mutex_destroy (&u->lock);
             pthread_cond_destroy (&u->invoke_cv);
             SvREFCNT_dec (u->interrupt);
