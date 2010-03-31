@@ -89,7 +89,7 @@ use Async::Interrupt ();
 use base 'EV::Loop';
 
 BEGIN {
-   our $VERSION = '0.03';
+   our $VERSION = '0.04';
 
    require XSLoader;
    XSLoader::load ("EV::Loop::Async", $VERSION);
@@ -188,7 +188,7 @@ sub new {
    my $self = bless $class->SUPER::new ($flags), $class;
    my ($c_func, $c_arg) = _c_func $self;
    my $asy = new Async::Interrupt @asy, c_cb => [$c_func, $c_arg];
-   $self->_attach ($asy, $asy->signal_func);
+   _attach $self, $asy, $asy->signal_func;
 
    $self
 }

@@ -12,15 +12,15 @@
 
 /* our userdata */
 typedef struct {
-  mutex_t lock; /* global loop lock */
+  xmutex_t lock; /* global loop lock */
   void (*signal_func) (void *signal_arg, int value);
   void *signal_arg;
   ev_async async_w;
-  thread_t tid;
+  xthread_t tid;
   unsigned int max_loops;
   unsigned int count;
 
-  cond_t invoke_cv;
+  xcond_t invoke_cv;
 
   SV *interrupt;
 #if defined(_WIN32) && defined(USE_ITHREADS)
@@ -165,6 +165,7 @@ _c_func (SV *loop)
 
 void
 _attach (SV *loop_, SV *interrupt, IV sig_func, void *sig_arg)
+        PROTOTYPE: @
 	CODE:
 {
   	pthread_mutexattr_t ma;
@@ -183,7 +184,11 @@ _attach (SV *loop_, SV *interrupt, IV sig_func, void *sig_arg)
         ev_async_start (EV_A, &u->async_w);
 
         pthread_mutexattr_init (&ma);
+#ifdef PTHREAD_MUTEX_RECURSIVE
         pthread_mutexattr_settype (&ma, PTHREAD_MUTEX_RECURSIVE);
+#else
+        pthread_mutexattr_settype (&ma, PTHREAD_MUTEX_RECURSIVE_NP);
+#endif
         pthread_mutex_init (&u->lock, &ma);
         pthread_mutexattr_destroy (&ma);
 

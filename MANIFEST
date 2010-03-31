@@ -9,3 +9,4 @@ Async.xs
 t/00_load.t
 t/01_basic.t
 META.yml                                 Module meta-data (added by MakeMaker)
+META.json                                Module meta-data (added by MakeMaker)
