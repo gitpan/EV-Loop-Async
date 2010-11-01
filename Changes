@@ -1,5 +1,8 @@
 Revision history for Perl extension EV::Loop::Async.
 
+1.01  Mon Nov  1 23:28:06 CET 2010
+	- improve configure_requires.
+
 1.0   Mon Nov  1 23:26:24 CET 2010
 	- port to EV 4.00 API.
 

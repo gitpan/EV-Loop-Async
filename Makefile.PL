@@ -40,14 +40,14 @@ my $mm = MM->new({EV::MakeMaker::ev_args (
     LIBS         => $LIBS,
     PREREQ_FATAL => 1,
     PREREQ_PM    => {
-       EV                  => 3.7,
+       EV                  => 4.00,
        Async::Interrupt    => 0.5,
        common::sense       => 0,
     },
-    META_MERGE => {
-      configure_requires => {
-        EV => 3.7,
-      },
+    CONFIGURE_REQUIRES => {
+       EV                  => 4.00,
+       Async::Interrupt    => 0.5,
+       common::sense       => 0,
     },
 )});
 

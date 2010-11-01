@@ -89,7 +89,7 @@ use Async::Interrupt ();
 use base 'EV::Loop';
 
 BEGIN {
-   our $VERSION = '1.0';
+   our $VERSION = '1.01';
 
    require XSLoader;
    XSLoader::load ("EV::Loop::Async", $VERSION);
