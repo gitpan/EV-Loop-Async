@@ -59,7 +59,7 @@ c_func (pTHX_ void *loop_, int value)
 
       ev_set_invoke_pending_cb (EV_A, fg_invoke_pending);
       ev_set_loop_release_cb (EV_A, 0, 0);
-      ev_loop (EV_A, EVLOOP_NONBLOCK);
+      ev_run (EV_A, EVRUN_NOWAIT);
       loop_set_cb (EV_A);
 
       if (!u->count)
@@ -128,7 +128,7 @@ X_THREAD_PROC(l_run)
   pthread_setcanceltype (PTHREAD_CANCEL_ASYNCHRONOUS, 0);
 
   ev_ref (EV_A);
-  ev_loop (EV_A, 0);
+  ev_run (EV_A, 0);
   ev_unref (EV_A);
 
   l_release (EV_A);

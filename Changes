@@ -1,5 +1,8 @@
 Revision history for Perl extension EV::Loop::Async.
 
+1.0   Mon Nov  1 23:26:24 CET 2010
+	- port to EV 4.00 API.
+
 0.04  Wed Mar 31 03:02:24 CEST 2010
         - suck steve's dick and rename our symbols to avoid colliding
           with nonstandard identifier spam on the broken os x pseudo-os.
